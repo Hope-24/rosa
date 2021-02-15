@@ -1,0 +1,635 @@
+@import url("https://fonts.googleapis.com/css?family=Cabin|Herr+Von+Muellerhoff|Source+Sans+Pro:400,900&display=swap");
+/*Global styles*/
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --main-font: "Source Sans Pro", sans-serif;
+  --secondary-font: "Herr Von Muellerhoff", cursive;
+  --body-font: "Cabin", sans-serif;
+  --main-font-color-dark: #252525;
+  --secondary-font-color: #c59d5f;
+  --body-font-color: #515151;
+}
+/* This is how you can declare variables within CSS, basically rather than writing the same style multiple times, you can call upon the variable from here. Also if you need to change the style, rather then going to every single element to change that style, you can simple change it within the variable and it will automatically change wherever the var has been called. */
+
+html {
+  font-family: var(--body-font);
+  font-size: 10px; /*We will use rem*/
+  color: var(--body-font-color);
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* Select section*/
+section {
+  padding: 3.9rem 0;
+  overflow: hidden; /*This makes sure that when you refresh, the images that are being animated from 
+  left,right,top,bottom won't start at another section or area outside of the container its it. It will
+  stay within its own container as the animations starts. */
+}
+
+img {
+  width: 100%;
+  max-width: 100%;
+  /* This will make sure that even if the img is too big for the section, its not going to overflow its parent*/
+}
+
+a {
+  text-decoration: none;
+}
+p {
+  font-size: 1.6erm;
+}
+
+.container {
+  width: 100%;
+  max-width: 122.5rem; /*The container is only going to 1,225 px as far as the width, once we get under the max-width rate than 100% will take over.*/
+  margin: 0 auto; /*Centering the containers*/
+  padding: 0 2.4rem;
+}
+/* Header styles */
+header {
+  width: 100%;
+  position: absolute; /* We are using a transparent navigation which will sit on top of my hero, so it will just be flowing there.*/
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent);
+}
+
+.nav {
+  height: 7.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-toggle {
+  color: #fff;
+  font-size: 2.2rem;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 2.5rem;
+  cursor: pointer;
+  z-index: 1500; /*This will be handy with we do navigation*/
+}
+.fa-times {
+  /*We dont need to see the 'x' right now*/
+  display: none;
+}
+
+.nav-list {
+  list-style: none;
+  position: fixed; /*Itll be flowly*/
+  top: 0;
+  left: 0;
+  width: 80%;
+  height: 100vh;
+  background: var(--main-font-color-dark);
+  padding: 4.4rem;
+  display: flex; /*It sets it to row by default so we change that to column*/
+  flex-direction: column;
+  justify-content: space-around;
+  z-index: 1250;
+  transform: translateX(-100%);
+  transition: transform 0.5s;
+}
+
+.nav::before {
+  /*We use this pseudo element because if we did this in the .nav-list then we will not be able to place it behind it*/
+  content: ""; /*We need to set content to empty string, because if we don't, it's not going to show up*/
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  opacity: 0;
+  /*This is to hide it, and with JS we will make it show up*/
+  transform: scale(0);
+  /*With opacity, its still there but just at 0 opacity, but this scale helps it to completely not be there*/
+  transition: opacity 0.5s;
+}
+
+/* Our open class */
+.open .fa-times {
+  /* We will apply this class through JS to the body element, and once the body element has it, it means the items inside of it will have specific style*/
+  display: block; /*Remember that we initially hit it*/
+}
+
+.open .fa-bars {
+  display: none;
+}
+
+/* Basically when the class of open is applied, the x will be shown and the hamburger menu will be hidden*/
+
+.open .nav-list {
+  transform: translateX(0);
+}
+
+.open .nav::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.nav-item {
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+}
+.nav-link {
+  display: block;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 1.6rem;
+  letter-spacing: 2px; /* When we use this property, sometimes if noticible, it will move the element little bit to the left so we give margin right to -2 px*/
+  margin-right: -2px;
+  transition: color 0.5s;
+}
+
+.nav-link:hover {
+  color: var(--secondary-font-color);
+}
+
+/* Hero */
+.hero {
+  width: 100%;
+  height: 100vh;
+  background: url(/img/hero.jpg) center no-repeat;
+  background-size: cover;
+  display: flex;
+  align-items: center; /*This only moved it on the y-axis to center*/
+  text-align: center; /*Because display of block is already taking up the applicable width, so we can just do text-align: center*/
+}
+
+.sub-headline {
+  font-size: 8.5rem;
+  font-family: var(--secondary-font);
+  color: var(--secondary-font-color);
+  font-weight: 100;
+  line-height: 0.4; /*Makes everyhing close together*/
+  letter-spacing: 2px; /*Margin right isn't necessary*/
+  opacity: 0;
+  animation: fadeUp 0.5s forwards 0.5s;
+}
+.first-letter {
+  text-transform: uppercase;
+  font-size: 10.3rem;
+}
+
+.headline {
+  color: white;
+  font-size: 3.7rem;
+  font-family: var(--main-font);
+  text-transform: uppercase;
+  font-weight: 900;
+  letter-spacing: 0.5rem;
+  margin-right: -0.5rem; /*We apply margin right -.5 because of the letter spacing, since it makes the element go a little left*/
+  animation: scale 0.5s forwards;
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.line {
+  width: 100%;
+  max-width: 8.4rem; /*This sets the max width, and the width won't get larger than this, and so when we set the normal width to a 100%, it means that the width will go to 8.4 width and won't go more than that*/
+  height: 0.25rem;
+  background: white;
+  opacity: 0;
+  position: relative; /* We will give it relative position because we will give it a pseudo element later, to create a little arrow at the end of each line*/
+  animation: grow 0.2s forwards;
+  animation-delay: 0.9s;
+}
+
+.line-right::before,
+.line-left::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0.6rem solid transparent;
+  opacity: 0;
+  animation: grow 0.5s forwards;
+  animation-delay: 1s;
+}
+
+.line-right::before {
+  border-right-color: #fff;
+  right: 0;
+}
+.line-left::before {
+  border-left-color: #fff;
+  left: 0;
+}
+
+.asterisk {
+  font-size: 1.2rem;
+  color: var(--secondary-font-color);
+  margin: 0 1.6rem;
+  opacity: 0;
+  animation: spin 0.5s forwards;
+  animation-delay: 0.7s;
+}
+
+.single-animation {
+  opacity: 0;
+  animation: fadeDown 0.5s forwards 1.5s;
+}
+
+.headline-description h5 {
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 100;
+  text-transform: uppercase;
+  margin-bottom: 1.2rem; /*We give it margin bottom so we can seperate the button we will create later*/
+  letter-spacing: 3px;
+  margin-right: -3px;
+}
+
+.btn {
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-right: -2px;
+}
+.cta-btn {
+  font-size: 1.1rem;
+  background: white;
+  padding: 0.9rem 1.8rem;
+  color: var(--body-font-color);
+  border-radius: 0.4rem;
+  transition: background 0.5s;
+}
+.cta-btn:hover,
+ctn.btn:focus {
+  color: white;
+  background: var(--secondary-font-color);
+}
+
+/*Discover our story*/
+.global-headline {
+  text-align: center;
+  margin: 3.9rem;
+}
+
+.discover-our-story .global-headline {
+  /* This one will have an even bigger margin top, because we want to create a seperation between header picture and headline*/
+  margin-top: 6.9rem;
+}
+
+.global-headline .asterisk {
+  color: var(--body-font-color);
+  margin: 2.4rem 0;
+}
+
+.headline-dark {
+  color: var(--main-font-color-dark);
+  letter-spacing: 0.7rem;
+  margin-right: -0.7rem;
+}
+
+.global-headline .sub-headline {
+  letter-spacing: -1px; /*It's very slight so px is fine and won't make a huge difference*/
+  line-height: 0.42;
+}
+
+.restaurant-info {
+  text-align: center;
+}
+
+.restaurant-description {
+  margin-bottom: 3rem;
+}
+
+.restaurant-description p {
+  line-height: 1.6;
+  margin-bottom: 2.4rem; /*Creates some space between p tag and button*/
+}
+
+.body-btn {
+  font-size: 1.5rem;
+  color: var(--secondary-font-color);
+  position: relative;
+  transition: color 0.5s;
+}
+
+.body-btn::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  left: 0;
+  bottom: -3px;
+  background: var(--secondary-font-color);
+  transition: background 0.5s;
+}
+
+.body-btn:hover,
+.body-btn:focus {
+  color: var(--main-font-color-dark);
+}
+
+.body-btn:hover::before,
+.body-btn:focus::before {
+  background: var(--main-font-color-dark);
+}
+/* Tasteful Recipes */
+.tasteful-recipes {
+  background: url(/img/tasteful-recipes.jpg) center no-repeat;
+  background-size: cover;
+}
+
+.between {
+  min-height: 65vh;
+  display: flex;
+  align-items: center;
+  /* Places our texts in the center of the conainer. from up down and left right, right in the center */
+}
+
+/* Discover our menu */
+.image-group {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 1.5rem;
+}
+
+.discover-our-menu .restaurant-description {
+  padding-top: 3rem;
+  margin-bottom: 0;
+}
+
+/* The perfect blend */
+.perfect-blend {
+  background: url(/img/perfect-blend.jpg) center no-repeat;
+  background-size: cover;
+}
+/* Footer */
+footer {
+  padding: 7.9rem 0;
+  background: #121212;
+  color: white;
+  text-align: center;
+  position: relative;
+}
+
+.back-to-top {
+  width: 7rem;
+  height: 7rem;
+  background: #121212;
+  position: absolute;
+  top: -3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+}
+
+.back-to-top i {
+  display: block;
+  color: white;
+  font-size: 2rem;
+  padding: 2rem;
+  animation: up 1.2s infinite;
+}
+
+.footer-content {
+  overflow: hidden;
+}
+
+.footer-content h4 {
+  font-size: 1.9rem;
+  text-transform: uppercase;
+  font-weight: 100;
+  letter-spacing: 3px;
+  margin-bottom: 3rem;
+}
+.footer-content .asterisk {
+  margin: 2.4rem 0;
+}
+
+.footer-content-about {
+  margin-bottom: 5.4rem;
+}
+
+.footer-content-about p {
+  line-height: 2; /*Create some seperation between the para*/
+}
+
+.social-icons {
+  list-style: none;
+  margin-bottom: 5.4rem;
+  display: flex;
+  justify-content: center;
+}
+
+.social-icons i {
+  font-size: 2rem;
+  color: white;
+  padding: 0.8rem 2rem;
+  opacity: 0.5;
+  transition: color 0.5s;
+}
+
+.social-icons i:hover,
+.social-icons i:focus {
+  color: var(--secondary-font-color);
+}
+
+.newsletter-form {
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+.newsletter-input {
+  width: 100%;
+  max-width: 25rem;
+  padding: 1rem;
+  border-radius: 0.4rem;
+}
+.newsletter-btn {
+  background: transparent;
+  border: none;
+  color: var(--main-font-color-dark);
+  cursor: pointer;
+  font-size: 1.6rem;
+  padding: 1px 0.6rem;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  /*Centers the button in the middle of text inuput*/
+  margin-left: 20rem; /*Moves to the left*/
+}
+
+/* Media queries */
+
+@media screen and (min-width: 900px) {
+  section {
+    padding: 7.9rem;
+  }
+  .menu-toggle {
+    display: none;
+  }
+  .nav {
+    justify-content: space-between;
+  }
+  .nav-list {
+    position: initial;
+    width: initial;
+    height: initial;
+    background: transparent;
+    padding: 0;
+    justify-content: initial;
+    flex-direction: row;
+    transform: initial;
+    transition: initial;
+  }
+  .nav-item {
+    margin: 0 2.4rem;
+    border: none;
+  }
+  .nav-item:last-child {
+    margin-right: 0;
+  }
+  .nav-link {
+    font-size: 1.3rem;
+  }
+  .active {
+    position: relative;
+  }
+  .active::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: white;
+    left: 0;
+    bottom: -3px;
+  }
+  .sub-headline {
+    font-size: 10rem;
+  }
+  .first-letter {
+    font-size: 12.2rem;
+  }
+
+  .headline {
+    font-size: 4.2rem;
+    letter-spacing: 0.8rem;
+  }
+  .line {
+    max-width: 11.4rem;
+  }
+  .restaurant-info {
+    display: flex;
+    align-items: center;
+  }
+  .restaurant-info > div {
+    flex: 1;
+  }
+  .padding-right {
+    padding-right: 7rem;
+  }
+  .footer-content {
+    max-width: 77.5rem;
+    margin: auto;
+  }
+  .footer-content-about {
+    max-width: 51.3rem;
+    margin: 0 auto 5.4rem;
+  }
+  .footer-content-divider {
+    display: flex;
+    justify-content: space-between;
+  }
+  .social-media,
+  .newsletter-form {
+    max-width: 27.3rem;
+    margin: 0 1rem;
+  }
+  .social-icons {
+    opacity: 1;
+  }
+  .newsletter-btn {
+    margin-left: 14.5rem;
+  }
+}
+
+/* min-width: 900px --When the screen width becomes 900px and larger than that, then these styles will apply. (Usually execute desktop style)
+max-widith-- When the screen width becomes 900px(or however much) wide and smaller than that, then execute these styles (Usually use this to execute mobile styles. */
+
+/*Animations*/
+@keyframes fadeUp {
+  0% {
+    transform: translateY(4rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /*Because 0 on Y-axis?*/
+  }
+}
+
+@keyframes scale {
+  0% {
+    transform: scale(2);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes grow {
+  0% {
+    width: 0;
+  }
+  100% {
+    opacity: 1;
+    width: 100%;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes fadeDown {
+  0% {
+    transform: translateY(-1rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /*Because 0 on Y-axis?*/
+  }
+}
+
+@keyframes up {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-1rem);
+  }
+}
